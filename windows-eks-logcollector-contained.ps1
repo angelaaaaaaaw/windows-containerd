@@ -114,8 +114,8 @@ Function init{
 Function collect{
     init
     is_diskfull
-    get_docker_info
-    get_docker_logs
+    get_containerd_info
+    get_containerd_logs
 
 }
 
