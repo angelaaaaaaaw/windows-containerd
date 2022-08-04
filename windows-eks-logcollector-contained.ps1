@@ -1,24 +1,7 @@
-<# 
-    Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-        http://aws.amazon.com/apache2.0/
-    or in the "license" file accompanying this file. 
-    This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-.SYNOPSIS 
-    Collects EKS Logs
-.DESCRIPTION 
-    Run the script to gather basic operating system, Docker daemon, and kubelet logs. 
-.NOTES
-    You need to run this script with Elevated permissions to allow for the collection of the installed applications list
-.EXAMPLE 
-    eks-log-collector.ps1
-    Gather basic operating system, Docker daemon, and kubelet logs. 
-#>
-
 param(
     [Parameter(Mandatory=$False)][string]$RunMode = "Collect"   
     )
-    
+
 # Common options
 $basedir="C:\log-collector"
 $instanceid = Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id
@@ -26,6 +9,7 @@ $curtime = Get-Date -Format FileDateTimeUniversal
 $outfilename = "eks_" + $instanceid + "_" + $curtime + ".zip"
 $infodir="$basedir\collect"
 $info_system="$infodir\system"
+
 
 # Common functions
 # ---------------------------------------------------------------------------------------
@@ -38,6 +22,7 @@ Function is_elevated{
         break
     }
 }
+
 
 Function create_working_dir{
     try {
@@ -77,10 +62,10 @@ Function is_diskfull{
 Function get_containerd_info{
     try {
         Write-Host "Collecting containerd daemon information"
-        ctr version > $info_system\containerd\containerd-version.txt
-        ctr -n k8s.io tasks list > $info_system\containerd\containerd-tasks-list.txt
-        ctr -n k8s.io container list > $info_system\containerd\containerd-list.txt
-        ctr -n k8s.io image list > $info_system\containerd\containerd-images.txt 
+        ctr version > $info_system\containerd\containerd-version.txt 2>&1
+        ctr -n k8s.io tasks list > $info_system\containerd\containerd-tasks-list.txt 2>&1
+        ctr -n k8s.io container list > $info_system\containerd\containerd-list.txt 2>&1
+        ctr -n k8s.io image list > $info_system\containerd\containerd-images.txt 2>&1 
         Write-Host "OK" -foregroundcolor "green"
     }
     catch{
@@ -92,8 +77,8 @@ Function get_containerd_info{
 Function get_containerd_logs{
     try {
         Write-Host "Collecting containerd daemon logs"
-        copy C:\ProgramData\containerd\root\panic.log $info_system/containerd_log/panic.log
-        copy C:\Program Files\containerd\config.toml $info_system/containerd_log/config.toml
+        copy C:\ProgramData\containerd\root\panic.log $info_system/containerd_log\
+        copy C:\Program Files\containerd\config.toml $info_system/containerd_log\
         Write-Host "OK" -foregroundcolor "green"
     }
     catch {
@@ -124,7 +109,6 @@ Function pack{
 Function init{
     is_elevated
     create_working_dir
-    get_sysinfo
 }
     
 Function collect{
