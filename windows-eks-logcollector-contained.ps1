@@ -78,7 +78,6 @@ Function get_containerd_logs{
     try {
         Write-Host "Collecting containerd daemon logs"
         copy C:\ProgramData\containerd\root\panic.log $info_system/containerd_log\
-        copy C:\Program Files\containerd\config.toml $info_system/containerd_log\
         Write-Host "OK" -foregroundcolor "green"
     }
     catch {
