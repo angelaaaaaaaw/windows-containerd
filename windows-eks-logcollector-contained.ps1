@@ -77,10 +77,10 @@ Function is_diskfull{
 Function get_containerd_info{
     try {
         Write-Host "Collecting containerd daemon information"
-        ctr version > $info_system\containerd\containerd-version.txt 2>&1
-        ctr -n k8s.io tasks list > $info_system\containerd\containerd-tasks-list.txt 2>&1
-        ctr -n k8s.io container list > $info_system\containerd\containerd-list.txt 2>&1
-        ctr -n k8s.io image list > $info_system\containerd\containerd-images.txt 2>&1 
+        ctr version > $info_system\containerd\containerd-version.txt
+        ctr -n k8s.io tasks list > $info_system\containerd\containerd-tasks-list.txt
+        ctr -n k8s.io container list > $info_system\containerd\containerd-list.txt
+        ctr -n k8s.io image list > $info_system\containerd\containerd-images.txt 
         Write-Host "OK" -foregroundcolor "green"
     }
     catch{
