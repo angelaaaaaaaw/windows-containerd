@@ -1,7 +1,24 @@
+<# 
+    Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
+        http://aws.amazon.com/apache2.0/
+    or in the "license" file accompanying this file. 
+    This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+.SYNOPSIS 
+    Collects EKS Logs
+.DESCRIPTION 
+    Run the script to gather basic operating system, Docker daemon, and kubelet logs. 
+.NOTES
+    You need to run this script with Elevated permissions to allow for the collection of the installed applications list
+.EXAMPLE 
+    eks-log-collector.ps1
+    Gather basic operating system, Docker daemon, and kubelet logs. 
+#>
+
 param(
     [Parameter(Mandatory=$False)][string]$RunMode = "Collect"   
     )
-
+    
 # Common options
 $basedir="C:\log-collector"
 $instanceid = Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id
