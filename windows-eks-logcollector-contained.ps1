@@ -10,7 +10,6 @@ $outfilename = "eks_" + $instanceid + "_" + $curtime + ".zip"
 $infodir="$basedir\collect"
 $info_system="$infodir\system"
 
-
 # Common functions
 # ---------------------------------------------------------------------------------------
 
@@ -22,7 +21,6 @@ Function is_elevated{
         break
     }
 }
-
 
 Function create_working_dir{
     try {
@@ -38,19 +36,6 @@ Function create_working_dir{
         Write-Error "Failed to create temporary directory"
         Break
     }
-}
-
-Function get_sysinfo{
-    try {
-        Write-Host "Collecting System information"
-        systeminfo.exe > $info_system\sysinfo
-        Write-Host "OK" -ForegroundColor "green"
-    }
-    catch {
-        Write-Error "Unable to collect system information" 
-        Break
-    }  
-        
 }
 
 Function is_diskfull{
@@ -144,4 +129,3 @@ Function main {
 
 #Entry point
 main
-
